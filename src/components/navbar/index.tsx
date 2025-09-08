@@ -1,8 +1,8 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSession} from "next-auth/react";
 import {motion} from "framer-motion";
-import {Sparkle} from "lucide-react";
+import {Menu, Sparkle, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {signIn} from "next-auth/react";
 
@@ -10,6 +10,14 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const {data: session} = useSession();
+
+    useEffect(()=>{
+        const handleScroll = ()=>{
+            setIsScrolled(window.screenY > 20);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    },[]);
 
     function scrollToSection(sectionId: String) {
         const element = document.getElementById(sectionId);
@@ -49,7 +57,8 @@ const Navbar = () => {
                             <Sparkle fill="transparent" className="h-8 w-8 text-primary animate-glow-pulse"/>
                             <div className="absolute inset-0 h-8 w-8 text-secondary animate-glow-pulse opacity-50 "/>
                         </div>
-                        <span className="text-2xl font-bold bg-gradient-primary !bg-clip-text text-transparent">OzuPicai</span>
+                        <span
+                            className="text-2xl font-bold bg-gradient-primary !bg-clip-text text-transparent">OzuPicai</span>
                     </motion.div>
 
                     {/*Navigation*/}
@@ -70,7 +79,42 @@ const Navbar = () => {
                             {session?.user ? 'Launch App' : 'Sign In'}
                         </Button>
                     </div>
+                    <button
+                        className="md:hidden text-foreground"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? (
+                            <X className="h-6 w-6"/>
+                        ) : (
+                            <Menu className="h-6 w-6"/>
+                        )}
+                    </button>
                 </div>
+                <motion.div
+                    initial={false}
+                    animate={{
+                        height: isMobileMenuOpen ? 'auto' : 0,
+                        opacity: isMobileMenuOpen ? 1 : 0,
+                    }}
+                    className="md:hidden overflow-hidden">
+                    <div className="py-4 space-y-4">
+                        <button
+                            onClick={() => scrollToSection("features")}
+                            className="block w-full text-left text-foreground hover:text-primary transition-colors font-medium"
+                        >
+                            Feature
+                        </button>
+                        <button
+                            onClick={() => scrollToSection("pricing")}
+                            className="block w-full text-left text-foreground hover:text-primary transition-colors font-medium"
+                        >
+                            Pricing
+                        </button>
+                        <Button variant="hero" className="w-full font-semibold" onClick={handleSubmit}>
+                            {session?.user ? 'Launch App' : 'Sign In'}
+                        </Button>
+                    </div>
+                </motion.div>
             </div>
         </motion.nav>
     );
