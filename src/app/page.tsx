@@ -1,10 +1,12 @@
 import React from 'react';
 import Hero from "@/modules/hero";
+import Features from "../modules/features";
 
 const Page = () => {
     return (
         <div>
-          <Hero/>
+            <Hero/>
+            <Features/>
         </div>
     );
 };
