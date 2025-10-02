@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import {Crown, Star, Zap} from "lucide-react";
+import {Check, Crown, Star, Zap} from "lucide-react";
 import {motion} from "framer-motion";
-import {index} from "d3-array";
+
 
 const plans = [
     {
@@ -62,7 +62,8 @@ const Pricing = () => {
                     viewport={{once: true}}
                     className="text-center mb-16"
                 >
-                    <div className="inline-flex items-center space-x-2 bg-gradient-glass rounded-full px-6 py-3 mb-6 glass border border-card-border">
+                    <div
+                        className="inline-flex items-center space-x-2 bg-gradient-glass rounded-full px-6 py-3 mb-6 glass border border-card-border">
                         <Zap className="h-5 text-primary"/>
                         <span className="font-medium">Nice Pricing</span>
                     </div>
@@ -73,31 +74,50 @@ const Pricing = () => {
                     <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Start free, upgrade when you need more. No hidden fee, cancel anytime</p>
                 </motion.div>
                 <div className="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    {plans?.map((plan,index) =>(
+                    {plans?.map((plan, index) => (
                         <motion.div
                             key={plan.name}
                             initial={{opacity: 0, y: 50}}
-                            whileInView={{opacity: 1, y:0}}
+                            whileInView={{opacity: 1, y: 0}}
                             viewport={{once: true}}
                             transition={{duration: 0.8, delay: index = 0.2}}
                             whileHover={{scale: 1.02, y: -5}}
-                            className={`relative group ${plan.popular ? "lg:-mt-8":""}`}
+                            className={`relative group ${plan.popular ? "lg:-mt-8" : ""}`}
                         >
                             {plan.popular && (
                                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                                    <div className="bg-gradient-primary px-6 py-2 rounded-full text-sm font-bold text-background">
+                                    <div
+                                        className="bg-gradient-primary px-6 py-2 rounded-full text-sm font-bold text-background">
                                         Most Popular
                                     </div>
                                 </div>
                             )}
-                            <div className={`h-full glass rounded-2xl p-8 border transition-all duration-300 ${plan.popular ? 'border-primary/50 shadow-glow-primary': 'border-card-border hover:border-primary/30 shadow-glow-subtle hover:shadow-glow-primary'}`}>
+                            <div
+                                className={`h-full glass rounded-2xl p-8 border transition-all duration-300 ${plan.popular ? 'border-primary/50 shadow-glow-primary' : 'border-card-border hover:border-primary/30 shadow-glow-subtle hover:shadow-glow-primary'}`}>
                                 <div className="text-center mb-8">
-                                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary top-secondary group-hover:animate-glow-pulse">
+                                    <div
+                                        className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary top-secondary group-hover:animate-glow-pulse">
                                         <plan.icon className="w-8 text-background"/>
                                     </div>
                                     <h3 className="text-2xl font-bold mb-2 text-foreground">{plan.name}</h3>
                                     <p className="text-muted-foreground mb-4">{plan.description}</p>
+                                    <div className="mb-6">
+                                        <span className="text-5xl font-bold text-foreground">{plan.price}</span>
+                                        <span className="text-muted-foreground ml-2">{plan.period}</span>
+                                    </div>
                                 </div>
+                                <div className="space-y-4 mb-8">
+                                    {plan?.features?.map((feature) => (
+                                        <div key={index} className={"flex items-center space-x-3"}>
+                                            <div
+                                                className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                                                <Check className="w-3 h3 text-primary"/>
+                                            </div>
+
+                                        </div>
+                                    ))}
+                                </div>
+
                             </div>
                         </motion.div>
                     ))}
